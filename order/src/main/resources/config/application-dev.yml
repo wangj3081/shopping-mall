@@ -1,0 +1,10 @@
+config.logger.appname: mall-order
+# 数据源配置
+spring.datasource.driverClassName: com.mysql.jdbc.Driver
+spring.datasource.url: jdbc:mysql://127.0.0.1:3306/mall_order?userUnicode=true&allowMultiQueries=true
+spring.datasource.username: root
+spring.datasource.password: root
+
+# Consul 服务配置
+config.consul.host: 127.0.0.1
+config.consul.port: 8500

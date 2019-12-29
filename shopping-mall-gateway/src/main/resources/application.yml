@@ -1,0 +1,85 @@
+server:
+  port: 9501
+
+spring:
+  application:
+      name: mall-gateway
+  profiles:
+    active: dev
+  cloud:
+    gateway:
+      enabled: true
+      httpclient:
+        ssl:
+          use-insecure-trust-manager: true
+      routes:
+        - id: integral-1
+          uri: lb://mall-integral  # 服务名
+          predicates:
+            - Path=/** # 代理该服务中的所有访问路径
+        - id: webdata-1
+          uri: lb://mall-webdata  # 服务名
+          predicates:
+            - Path=/** # 代理该服务中的所有访问路径
+        # - id: microcloud-2
+        #   uri: http://localhost:8512
+        #   predicates:
+        #   - Path=/**  # 代理该服务中的所有访问路径
+      discovery:
+        locator:
+          lower-case-service-id: true # 忽略大小寫
+          enabled: true # 路由定义定位器
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      enabled: true
+      discovery:
+        tags: version=1.0,author=code
+        health-check-path: /manager/info # 为健康检查的url,由consul定时调用一次判断服务是否可用
+        health-check-interval: 5s # 检查间隔时间
+        register-health-check: false # 不做健康检查
+#        instance-id: ${spring.application.name}:${java.rmi.server.hostname}:${server.port} # 注册的服务ID
+        instance-id: ${spring.application.name}:${server.port} # 注册的服务ID
+       # service-name: ${spring.application.name} # 注册的服务名称
+        service-name: mall-gateway # 注册的服务名称
+        prefer-ip-address: true # 是否使用指定IP地址，默认为 false
+        ip-address: 127.0.0.1 # 指定 IP 地址
+        deregister: true
+#  zipkin:
+##    base-url: http://localhost:8601 # 所有的数据提交到此服务
+#    sender:
+#      type: rabbit # 改用 rabbitMQ
+#  sleuth:
+#    sampler:
+#      probability: 1.0  # 定义抽样比率 100% 进行比例抽样，默认为 0.1
+#    messaging:
+#        rabbit:
+#          enabled: true
+#  rabbitmq: # rabbitmq 配置
+#    host: 192.168.158.134
+#    port: 5672
+#    username: admin
+#    password: rabbit
+#    virtual-host: /
+#    listener: # 配置重试策略
+#      direct:
+#        retry:
+#          enabled: true # 是否开启重试
+#          max-attempts: 5 # 消息队列消费失败重试次数
+#          initial-interval: 1000ms # 重试间隔时间
+#
+#      simple:
+#        retry:
+#          enabled: true
+
+# actuator 配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*' # actuator2.0 版本之后默认只暴露 info 与 health，使用 * 为暴露所有
+      basePath: '/manager' # 监控请求地址前缀,默认为 /actuator
+
+info:
+  app.name: "@config.logger.appname@"
+  app.version: 1.0

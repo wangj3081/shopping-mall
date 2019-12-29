@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.shopping</groupId>
+  <artifactId>shopping-mall</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>inventory</module>
+    <module>order</module>
+    <module>integral</module>
+    <module>wms</module>
+    <module>shopping-mall-service</module>
+    <module>shopping-mall-gateway</module>
+    <module>putdata</module>
+    <module>shopping-mall-consumer</module>
+  </modules>
+
+  <name>shopping-mall</name>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <jdk.version>1.8</jdk.version>
+    <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
+    <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
+    <shopping-mall-service.version>1.0-SNAPSHOT</shopping-mall-service.version>
+    <logback-classic.version>1.2.3</logback-classic.version>
+    <lombok.version>1.18.8</lombok.version>
+    <mysql.version>5.1.48</mysql.version>
+    <mybatis-spring-boot.version>2.0.1</mybatis-spring-boot.version>
+    <mybatis-plus.version>3.1.1</mybatis-plus.version>
+    <durid-spring-boot.version>1.1.17</durid-spring-boot.version>
+    <swagger2.version>2.9.2</swagger2.version>
+    <swagger-boot.version>1.9.1.RELEASE</swagger-boot.version>
+    <htmlunit.version>2.36.0</htmlunit.version>
+    <jsoup.version>1.12.1</jsoup.version>
+    <jsoup-util.version>1.0</jsoup-util.version>
+    <fastjson.version>1.2.46</fastjson.version>
+    <guava.version>20.0</guava.version>
+    <jackson-annotations.version>2.9.0</jackson-annotations.version>
+    <commons-collections4.version>4.4</commons-collections4.version>
+    <httpclient.version>4.5.3</httpclient.version>
+    <commons-lang3.version>3.7</commons-lang3.version>
+    <validation.version>2.0.1.Final</validation.version>
+<!--    <seata.version>0.9.0.1</seata.version>-->
+    <seata.version>1.0.0</seata.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!--cloud父pom引用-->
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!--支持cloud-->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!--暴露的服务接口 API-->
+      <dependency>
+        <groupId>com.shopping</groupId>
+        <artifactId>shopping-mall-service</artifactId>
+        <version>${shopping-mall-service.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>net.logstash.logback</groupId>
+        <artifactId>logstash-logback-encoder</artifactId>
+        <version>6.0</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback-classic.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+      </dependency>
+      <!--postgresql
+      <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.2.6</version>
+      </dependency> -->
+      <!--mysql-->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.version}</version>
+      </dependency>
+      <!--druid 连接池-->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-starter</artifactId>
+        <version>${durid-spring-boot.version}</version>
+      </dependency>
+      <!--mybatis springboot jar
+      <dependency>
+        <groupId>org.mybatis.spring.boot</groupId>
+        <artifactId>mybatis-spring-boot-starter</artifactId>
+        <version>${mybatis-spring-boot.version}</version>
+      </dependency>-->
+
+      <!--mybatis-plus 包-->
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus</artifactId>
+        <version>${mybatis-plus.version}</version>
+      </dependency>
+
+      <!--mybatis-plus spring boot 整合包-->
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatis-plus.version}</version>
+      </dependency>
+
+      <!--swagger boot 整合包-->
+      <dependency>
+        <groupId>com.spring4all</groupId>
+        <artifactId>swagger-spring-boot-starter</artifactId>
+        <version>${swagger-boot.version}</version>
+      </dependency>
+      <!--swagger-->
+      <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger2</artifactId>
+        <version>${swagger2.version}</version>
+      </dependency>
+    <!--swagger UI-->
+      <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger-ui</artifactId>
+        <version>${swagger2.version}</version>
+      </dependency>
+      <!--用于Java程序的无GUI浏览器 http://htmlunit.sourceforge.net/ -->
+      <dependency>
+        <groupId>net.sourceforge.htmlunit</groupId>
+        <artifactId>htmlunit</artifactId>
+        <version>${htmlunit.version}</version>
+      </dependency>
+      <!--jsoup 爬虫包-->
+      <dependency>
+        <groupId>org.jsoup</groupId>
+        <artifactId>jsoup</artifactId>
+        <version>${jsoup.version}</version>
+      </dependency>
+      <!--不知道有没有用的爬虫工具库-->
+      <dependency>
+        <groupId>com.github.jjYBdx4IL.utils</groupId>
+        <artifactId>jsoup-utils</artifactId>
+        <version>${jsoup-util.version}</version>
+      </dependency>
+
+      <!--引入fastJson-->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>${fastjson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <!-- JSON 转换注解-->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson-annotations.version}</version>
+      </dependency>
+
+      <!--集合处理工具包-->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-collections4</artifactId>
+        <version>${commons-collections4.version}</version>
+      </dependency>
+      <!--http 工具包-->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
+      </dependency>
+      <!--apache 工具包-->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3.version}</version>
+      </dependency>
+      <!--参数验证工具包-->
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>${validation.version}</version>
+      </dependency>
+      <!--seata 分布式事务处理框架-->
+      <!--seata-->
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-alibaba-seata</artifactId>
+        <version>2.1.0.RELEASE</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>seata-all</artifactId>
+            <groupId>io.seata</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>io.seata</groupId>
+        <artifactId>seata-all</artifactId>
+        <version>${seata.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.ecwid.consul</groupId>
+        <artifactId>consul-api</artifactId>
+        <version>1.4.2</version>
+        <scope>provided</scope>
+        <exclusions>
+          <exclusion>
+            <artifactId>gson</artifactId>
+            <groupId>com.google.code.gson</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <finalName>shopping-mall</finalName>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>${jdk.version}</source> <!--源码的JDK版本-->
+            <target>${jdk.version}</target>
+            <encoding>${project.build.sourceEncoding}</encoding>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <!--<version>${spring-boot.version}</version>-->
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <!--资源文件打包管理-->
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.yml</include>
+          <include>**/*.xml</include>
+          <include>**/*.tld</include>
+          <include>**/*.html</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.yml</include>
+          <include>**/*.xml</include>
+          <include>**/*.tld</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
+</project>

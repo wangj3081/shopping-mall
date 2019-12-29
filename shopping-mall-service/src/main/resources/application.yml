@@ -1,0 +1,9 @@
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000  # feign 的连接超时时间
+        readTimeout: 5000 # feign 读取超时时间
+        loggerLevel: full
+
+

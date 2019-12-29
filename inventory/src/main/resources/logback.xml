@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+	<substitutionProperty name="APP" value="@config.logger.appname@"/> <!--设置的日志名称-->
+<!--	<property name="LOG_HOME" value="/data/www/log/${APP}" />-->
+	<property name="LOG_HOME" value="./${APP}" />
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<!--
+				%X{X-B3-TraceId:-}： traceId 记录
+				%X{X-B3-SpanId:-}： spanId 记录
+			-->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} | %level | ${APP} | %X{X-B3-TraceId:-}-%X{X-B3-SpanId:-} | [%logger{100}_%M] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="DETAIL"
+		class="ch.qos.logback.core.rolling.RollingFileAppender" additivity="false">
+		<File>${LOG_HOME}/${APP}_detail.log</File>
+		<encoder>
+			<!--<pattern>%d{yy-MM-dd.HH:mm:ss.SSS} [%-16t] %-5p %-22c{0} %X{ServiceId} - %m%n</pattern>-->
+			<!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %X{X-B3-TraceId:-}-%X{X-B3-SpanId:-} %X{ServiceId} %level ${LOG_SYSTEM} [%logger{100}_%M] - %msg%n</pattern>-->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} | %level | ${APP} | %X{X-B3-TraceId:-}-%X{X-B3-SpanId:-} | [%logger{100}_%M] - %msg%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP}_detail.log.%d{yyyyMMdd}</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	<appender name="ACCESS"
+		class="ch.qos.logback.core.rolling.RollingFileAppender" additivity="false">
+		<File>${LOG_HOME}/${APP}_access.log</File>
+		<encoder>
+			<pattern>%d{yy-MM-dd.HH:mm:ss.SSS};%X{ServiceId};%m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP}_access.log.%d{yyyyMMdd}</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+
+
+	<logger name="ACCESS">
+		<appender-ref ref="ACCESS" />
+	</logger>
+	<logger name="druid.sql.Statement" level="DEBUG" />
+	<logger name="org.springframework" level="INFO"/>
+	<logger name="com.shopping" level="DEBUG"/>
+	<!--设置mybatis的日志信息输出-->
+	<!--<logger name="com.microclound.dao" level="TRACE" />-->
+
+	<root level="INFO">
+		<appender-ref ref="DETAIL" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="ACCESS"/>
+	</root>
+</configuration>

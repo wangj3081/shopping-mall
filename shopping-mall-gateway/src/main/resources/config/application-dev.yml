@@ -1,0 +1,5 @@
+config.logger.appname: mall-gateway
+# 数据源配置
+# Consul 服务配置
+config.consul.host: 127.0.0.1
+config.consul.port: 8500

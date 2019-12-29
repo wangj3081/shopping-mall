@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.shopping.wms.dao.WmsStorageDao">
+
+    <!--根据店铺编码，SKU 修改仓库存量、可用-->
+    <update id="wmsStorageUpdateByStoreNo" parameterType="com.shopping.order.dto.OrderGoodsDto" useGeneratedKeys="true">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE wms_storage
+            <set>
+                available_num = available_num - #{item.changeNum},
+                storage_num = storage_num - #{item.changeNum},
+                wait_outbount = wait_outbount + #{item.changeNum},
+            </set>
+            <where>
+                storage_no = #{item.storeNo}
+                AND sku = #{item.sku}
+            </where>
+        </foreach>
+    </update>
+</mapper>
