@@ -1,6 +1,7 @@
 package com.shopping.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.google.protobuf.ServiceException;
 import com.shopping.order.dto.OrderPayDto;
 import com.shopping.order.dto.OrderReq;
 import com.shopping.order.entity.OrderMainEntity;
@@ -27,7 +28,7 @@ public interface OrderMainService extends IService<OrderMainEntity> {
      * @param orderReq
      * @return
      */
-    String createOrder(OrderReq orderReq);
+    String createOrder(OrderReq orderReq) throws ServiceException;
 
     /**
      * 获取订单编码
@@ -47,5 +48,5 @@ public interface OrderMainService extends IService<OrderMainEntity> {
      * @param orderPay 订单支付编码
      * @return
      */
-    String orderPay(String orderNo, String orderPay);
+    String orderPay(String orderNo, String orderPay) throws ServiceException;
 }

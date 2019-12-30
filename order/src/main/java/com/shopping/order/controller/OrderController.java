@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
+import com.google.protobuf.ServiceException;
 import com.shopping.integral.dto.IntegralDto;
 import com.shopping.integral.service.IntegralService;
 import com.shopping.order.dto.OrderPayDto;
@@ -48,7 +49,7 @@ public class OrderController {
 
     @ApiOperation(value = "创建订单", httpMethod = "POST")
     @RequestMapping(value = "createOrder", method = RequestMethod.POST)
-    public Result<String> createOrder(@RequestBody OrderReq orderReq) {
+    public Result<String> createOrder(@RequestBody OrderReq orderReq) throws ServiceException {
         String orderNo = orderMainService.createOrder(orderReq);
         return new Result<String>().success(orderNo);
     }
@@ -67,15 +68,11 @@ public class OrderController {
 
     @ApiOperation(value = "订单支付,支付成功返回支付编码", httpMethod = "POST")
     @PostMapping(value = "orderPay")
-    public Result<String> orderPay(@RequestBody OrderPayDto orderPayDto) {
+    public Result<String> orderPay(@RequestBody OrderPayDto orderPayDto) throws ServiceException {
         // 获取支付编码
-        try {
-            String payNo = orderMainService.getPayNo();
-            orderMainService.orderPay(orderPayDto.getOrderNo(), payNo);
-            return new Result<String>().success("SUCCESS");
-        } catch (Exception e) {
-            return new Result<String>().error("-1", "订单支付处理失败");
-        }
+        String payNo = orderMainService.getPayNo();
+        orderMainService.orderPay(orderPayDto.getOrderNo(), payNo);
+        return new Result<String>().success("SUCCESS");
     }
 
 

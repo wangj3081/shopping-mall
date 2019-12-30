@@ -83,7 +83,7 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainDao, OrderMainEnt
 //    @GlobalTransactional(name = "fsp-create-order", rollbackFor = Exception.class)
     @GlobalTransactional
     @Override
-    public String createOrder(OrderReq orderReq) {
+    public String createOrder(OrderReq orderReq) throws ServiceException {
         log.info("============order==============");
         log.info("【XID】:{}", RootContext.getXID());
         // 详情信息
@@ -121,7 +121,10 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainDao, OrderMainEnt
             detailService.insertOrderDetailList(detailList);
             log.error("【店铺数据】:{}", JSONObject.toJSONString(goodsDtoList));
             // 扣减店铺可用
-            inventoryService.updateAvailableNumGoodsList(goodsDtoList);
+            Result<String> updateResult = inventoryService.updateAvailableNumGoodsList(goodsDtoList);
+            if (!"0".equals(updateResult.getCode())){
+                throw new ServiceException("更新库存错误:"+updateResult.getMessage());
+            }
 //            int index = 100/0;
         } else {
             return Result.ERROR_CODE;
@@ -153,7 +156,7 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainDao, OrderMainEnt
 
     @GlobalTransactional
     @Override
-    public String orderPay(String orderNo, String orderPayNo) {
+    public String orderPay(String orderNo, String orderPayNo) throws ServiceException {
         OrderMainEntity orderMainEntity = new OrderMainEntity();
         LambdaUpdateWrapper<OrderMainEntity> wrapper = new LambdaUpdateWrapper(orderMainEntity);
         // 处理订单信息
@@ -172,8 +175,14 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainDao, OrderMainEnt
         List<OrderGoodsDto> orderGoodsDtos = CustomBeanAndSuperUtils.convertPojos(detailList, OrderGoodsDto.class);
         // 扣减库存信息
         Result<String> result = inventoryService.updateStorageNumGoodsList(orderGoodsDtos);
+        if (!"0".equals(result)) {
+            throw new ServiceException("扣减库存失败:" + result.getMessage());
+        }
         // 通知仓库发货
         Result<String> wmsResult = wmsStorageService.updateWmsStorageList(orderGoodsDtos);
+        if (!"0".equals(wmsResult)) {
+            throw new ServiceException("扣减仓库库存失败:" + wmsResult.getMessage());
+        }
         return "SUCCESS";
     }
 }
