@@ -5,7 +5,7 @@
 	namespace="com.shopping.wms.dao.WmsStorageDao">
 
     <!--根据店铺编码，SKU 修改仓库存量、可用-->
-    <update id="wmsStorageUpdateByStoreNo" parameterType="com.shopping.order.dto.OrderGoodsDto" useGeneratedKeys="true">
+    <update id="wmsStorageUpdateListByStoreNo" parameterType="com.shopping.order.dto.OrderGoodsDto" useGeneratedKeys="true">
         <foreach collection="list" item="item" separator=";">
             UPDATE wms_storage
             <set>
@@ -18,5 +18,19 @@
                 AND sku = #{item.sku}
             </where>
         </foreach>
+    </update>
+
+    <!--订单支付成功后根据店铺编码、SKU扣减库存，招揽发货-->
+    <update id="wmsStorageUpdateByStoreNo" parameterType="com.shopping.order.dto.OrderGoodsDto" useGeneratedKeys="true">
+        UPDATE wms_storage
+        <set>
+            available_num = available_num - #{changeNum},
+            storage_num = storage_num - #{changeNum},
+            wait_outbount = wait_outbount + #{changeNum},
+        </set>
+        <where>
+            storage_no = #{storeNo}
+            AND sku = #{sku}
+        </where>
     </update>
 </mapper>

@@ -20,6 +20,20 @@
         </foreach>
     </update>
 
+    <!--根据店铺编码、SKU、更新单个库存商品存量,支付完成时-->
+    <update id="updateStorageNumByStorageNo" parameterType="com.shopping.order.dto.OrderGoodsDto" useGeneratedKeys="true">
+        UPDATE inventory_goods
+        <set>
+            storage_num = storage_num - ${changeNum},
+            sell_num = sell_num + ${changeNum},
+            wait_pay_num = wait_pay_num - ${changeNum}
+        </set>
+        <where>
+            store_no = #{storeNo}
+            AND sku = #{sku}
+        </where>
+    </update>
+
     <!--根据店铺编码、SKU 更新库存商品可用集合,在创建订单时-->
     <update id="updateAvailableNumListByStorageNo" useGeneratedKeys="true" parameterType="com.shopping.order.dto.OrderGoodsDto">
         <foreach collection="list" item="item" separator=";">
@@ -31,4 +45,15 @@
             where store_no = #{item.storeNo} AND sku = #{item.sku}
         </foreach>
     </update>
+
+    <!--根据店铺编码、SKU 更新单个库存商品可用,在创建订单时-->
+    <update id="updateAvailableNumByStorageNo"  useGeneratedKeys="true" parameterType="com.shopping.order.dto.OrderGoodsDto">
+        UPDATE inventory_goods
+        <set>
+            available_num = available_num - #{changeNum},
+            wait_pay_num = wait_pay_num + #{changeNum}
+        </set>
+        where store_no = #{storeNo} AND sku = #{sku}
+    </update>
+
 </mapper>

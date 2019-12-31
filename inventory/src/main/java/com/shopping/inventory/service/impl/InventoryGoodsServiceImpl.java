@@ -44,7 +44,11 @@ public class InventoryGoodsServiceImpl extends ServiceImpl<InventoryGoodsDao, In
     @Override
     public void updateStorageNumListByStorageNo(List<OrderGoodsDto> goodsList) {
         if (!CollectionUtils.isEmpty(goodsList)) {
-            this.inventoryGoodsDao.updateStorageNumListByStorageNo(goodsList);
+            // seata 暂时不支持批量更新，只能使用循环单条数据更新
+            // this.inventoryGoodsDao.updateStorageNumListByStorageNo(goodsList);
+            for (OrderGoodsDto goodsDto : goodsList) {
+                this.inventoryGoodsDao.updateStorageNumByStorageNo(goodsDto);
+            }
         } else {
             throw new RuntimeException("更新的数据集合不能为空");
         }
@@ -60,7 +64,11 @@ public class InventoryGoodsServiceImpl extends ServiceImpl<InventoryGoodsDao, In
         log.info("============inventory==============");
         log.info("【XID】:{}", RootContext.getXID());
         if (!CollectionUtils.isEmpty(goodsEntityList)) {
-            this.inventoryGoodsDao.updateAvailableNumListByStorageNo(goodsEntityList);
+            // seata 暂时不支持批量更新，只能使用循环单条数据更新
+            // this.inventoryGoodsDao.updateAvailableNumListByStorageNo(goodsEntityList);
+            for (OrderGoodsDto goodsDto : goodsEntityList) {
+                this.inventoryGoodsDao.updateAvailableNumByStorageNo(goodsDto);
+            }
         } else {
             throw new RuntimeException("更新的数据集合不能为空");
         }

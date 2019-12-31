@@ -3,7 +3,6 @@ package com.shopping.wms.controller;
 import com.google.protobuf.ServiceException;
 import com.shopping.order.dto.OrderGoodsDto;
 import com.shopping.util.Result;
-import com.shopping.wms.service.WmsStorageFeignService;
 import com.shopping.wms.service.WmsStorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +42,7 @@ public class WmsStorageController {
             }
         } catch (Exception e) {
             log.error("订单支付完成扣减库存异常:「{}」", e);
-            new ServiceException("仓储服务异常了");
+            new ServiceException("仓储服务异常了:" + e.getMessage());
         }
         return new Result<String>().error("-1", "更新失败");
     }

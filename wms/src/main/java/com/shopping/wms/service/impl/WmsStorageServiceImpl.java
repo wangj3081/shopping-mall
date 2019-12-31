@@ -1,6 +1,7 @@
 package com.shopping.wms.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.protobuf.ServiceException;
 import com.shopping.order.dto.OrderGoodsDto;
 import com.shopping.wms.dao.WmsStorageDao;
 import com.shopping.wms.entity.WmsStorageEntity;
@@ -35,8 +36,15 @@ public class WmsStorageServiceImpl extends ServiceImpl<WmsStorageDao, WmsStorage
     }
 
     @Override
-    public Integer updateWmsStorageList(List<OrderGoodsDto> list) {
-        Integer result = wmsStorageDao.wmsStorageUpdateByStoreNo(list);
+    public Integer updateWmsStorageList(List<OrderGoodsDto> list) throws ServiceException {
+        // seata 暂时不支持批量修改
+        int result = 0;
+        for (OrderGoodsDto goodsDto : list) {
+             result = wmsStorageDao.wmsStorageUpdateByStoreNo(goodsDto);
+             if (result == 0) {
+                 throw new ServiceException("扣减仓库库存数据失败");
+             }
+        }
         return result;
     }
 }

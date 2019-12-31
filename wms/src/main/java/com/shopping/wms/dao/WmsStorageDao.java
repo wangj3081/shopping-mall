@@ -24,5 +24,12 @@ public interface WmsStorageDao extends BaseMapper<WmsStorageEntity> {
      * @param list
      * @return
      */
-    Integer wmsStorageUpdateByStoreNo(@Param(value = "list") List<OrderGoodsDto> list);
+    Integer wmsStorageUpdateListByStoreNo(@Param(value = "list") List<OrderGoodsDto> list);
+
+    /**
+     * 订单支付成功后根据店铺编码、SKU扣减库存，招揽发货
+     * @param goodsDto
+     * @return
+     */
+    Integer wmsStorageUpdateByStoreNo(OrderGoodsDto goodsDto);
 }

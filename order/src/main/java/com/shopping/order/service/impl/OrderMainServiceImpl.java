@@ -175,12 +175,12 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainDao, OrderMainEnt
         List<OrderGoodsDto> orderGoodsDtos = CustomBeanAndSuperUtils.convertPojos(detailList, OrderGoodsDto.class);
         // 扣减库存信息
         Result<String> result = inventoryService.updateStorageNumGoodsList(orderGoodsDtos);
-        if (!"0".equals(result)) {
+        if (!"0".equals(result.getCode())) {
             throw new ServiceException("扣减库存失败:" + result.getMessage());
         }
         // 通知仓库发货
         Result<String> wmsResult = wmsStorageService.updateWmsStorageList(orderGoodsDtos);
-        if (!"0".equals(wmsResult)) {
+        if (!"0".equals(wmsResult.getCode())) {
             throw new ServiceException("扣减仓库库存失败:" + wmsResult.getMessage());
         }
         return "SUCCESS";

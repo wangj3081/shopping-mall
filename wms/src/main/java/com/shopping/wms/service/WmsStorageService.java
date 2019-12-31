@@ -1,6 +1,7 @@
 package com.shopping.wms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.google.protobuf.ServiceException;
 import com.shopping.order.dto.OrderGoodsDto;
 import com.shopping.wms.entity.WmsStorageEntity;
 
@@ -26,5 +27,5 @@ public interface WmsStorageService extends IService<WmsStorageEntity> {
      * 批量更新仓储数据信息
      * @param list
      */
-    Integer updateWmsStorageList(List<OrderGoodsDto> list);
+    Integer updateWmsStorageList(List<OrderGoodsDto> list) throws ServiceException;
 }

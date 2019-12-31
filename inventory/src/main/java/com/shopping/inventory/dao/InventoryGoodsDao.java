@@ -25,9 +25,21 @@ public interface InventoryGoodsDao extends BaseMapper<InventoryGoodsEntity> {
     void updateStorageNumListByStorageNo(@Param(value = "list") List<OrderGoodsDto> goodsEntityList);
 
     /**
+     * 根据店铺编码、SKU、更新单个库存商品存量,支付完成时
+     * @param goodsDto
+     */
+    void updateStorageNumByStorageNo(OrderGoodsDto goodsDto);
+
+    /**
      * 根据店铺编码、SKU 更新库存商品集合
      * @param goodsEntityList
      */
     void updateAvailableNumListByStorageNo(@Param(value = "list") List<OrderGoodsDto> goodsEntityList);
+
+    /**
+     * 根据店铺编码、SKU 更新单个库存商品可用,在创建订单时
+     * @param goodsDto
+     */
+    void updateAvailableNumByStorageNo(OrderGoodsDto goodsDto);
 
 }
