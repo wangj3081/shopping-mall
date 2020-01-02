@@ -16,11 +16,19 @@ spring:
         - id: integral-1
           uri: lb://mall-integral  # 服务名
           predicates:
-            - Path=/** # 代理该服务中的所有访问路径
+            - Path=/mall-integral/** # 代理该服务中的所有访问路径
         - id: webdata-1
           uri: lb://mall-webdata  # 服务名
           predicates:
-            - Path=/** # 代理该服务中的所有访问路径
+            - Path=/mall-webdata/** # 代理该服务中的所有访问路径
+        - id: inventory-1
+          uri: lb://mall-inventory  # 服务名
+          predicates:
+            - Path=/inventory/** # 代理该服务中的所有访问路径
+        - id: order-1
+          uri: lb://mall-order  # 服务名
+          predicates:
+            - Path=/order/** # 代理该服务中的所有访问路径
         # - id: microcloud-2
         #   uri: http://localhost:8512
         #   predicates:
