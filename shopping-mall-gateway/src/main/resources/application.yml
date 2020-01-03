@@ -12,23 +12,33 @@ spring:
       httpclient:
         ssl:
           use-insecure-trust-manager: true
+      globalcors:
+
       routes:
-        - id: integral-1
+        - id: integral
           uri: lb://mall-integral  # 服务名
           predicates:
-            - Path=/mall-integral/** # 代理该服务中的所有访问路径
-        - id: webdata-1
+            - Path=/integral/** # 代理该服务中的所有访问路径
+        - id: webdata
           uri: lb://mall-webdata  # 服务名
           predicates:
             - Path=/mall-webdata/** # 代理该服务中的所有访问路径
-        - id: inventory-1
+        - id: inventory
           uri: lb://mall-inventory  # 服务名
           predicates:
             - Path=/inventory/** # 代理该服务中的所有访问路径
-        - id: order-1
+          filter:
+            - StripPrefix=1
+        - id: order
           uri: lb://mall-order  # 服务名
           predicates:
             - Path=/order/** # 代理该服务中的所有访问路径
+        - id: wms
+          uri: lb://mall-wms  # 服务名
+          predicates:
+            - Path=/wms/** # 代理该服务中的所有访问路径
+#          filter:
+#            -StripPrefix=1
         # - id: microcloud-2
         #   uri: http://localhost:8512
         #   predicates:

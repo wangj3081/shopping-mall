@@ -16,8 +16,8 @@ import java.util.List;
  * @see IntegralService
  * @since JDK1.8
  */
-//@FeignClient(value = "mall-integral")
-@FeignClient(value = "mall-gateway")
+@FeignClient(value = "mall-integral")
+//@FeignClient(value = "mall-gateway")
 public interface IntegralService {
 
 
@@ -33,5 +33,5 @@ public interface IntegralService {
      * @return
      */
     @RequestMapping(value = "/integral/echo", method = RequestMethod.GET)
-    String echo(@RequestParam(value = "message")String message);
+    String echo(@RequestParam(value = "message") String message);
 }

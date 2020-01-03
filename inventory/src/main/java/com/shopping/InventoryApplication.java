@@ -1,16 +1,10 @@
 package com.shopping;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.fastjson.JSONObject;
-import com.shopping.inventory.config.SpringContextUtil;
-import io.seata.config.springcloud.SpringContextProvider;
+import com.spring4all.swagger.EnableSwagger2Doc;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.context.ApplicationContext;
-
-import javax.sql.DataSource;
 
 /**
  * 库存服务
@@ -21,6 +15,7 @@ import javax.sql.DataSource;
  */
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @MapperScan("com.shopping.inventory.dao")
+@EnableSwagger2Doc
 public class InventoryApplication {
 
     public static void main(String[] args) {

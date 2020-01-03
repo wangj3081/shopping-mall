@@ -40,8 +40,9 @@
 		<appender-ref ref="ACCESS" />
 	</logger>
 	<logger name="druid.sql.Statement" level="DEBUG" />
-	<logger name="org.springframework" level="INFO"/>
+	<logger name="org.springframework" level="DEBUG"/>
 	<logger name="com.shopping" level="DEBUG"/>
+	<logger name="reactor.netty" level="DEBUG"/>
 	<!--设置mybatis的日志信息输出-->
 	<!--<logger name="com.microclound.dao" level="TRACE" />-->
 
