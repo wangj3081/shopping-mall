@@ -39,7 +39,7 @@
 	<logger name="ACCESS">
 		<appender-ref ref="ACCESS" />
 	</logger>
-	<logger name="druid.sql.Statement" level="DEBUG" />
+	<logger name="com.mysql.jdbc.Statement" level="DEBUG" />
 	<logger name="org.springframework" level="INFO"/>
 	<logger name="com.shopping" level="DEBUG"/>
 	<!--设置mybatis的日志信息输出-->

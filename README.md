@@ -9,3 +9,7 @@
 ##### 网关更新
 
 此前的接口未通过网关来进行访问，是在 consumer 那个模块通过 Feign 直调的接口，目前使用了网关，这样让 consumer 这个模块显得有些多余，可以直接把它移除，当然在网关中我也配置了 Swagger，除了 consumer 把其他几个项目启动后，再启动 shopping-mall-gateway 项目，成功后再访问 [swagger-ui](http://127.0.0.1:9501/swagger-ui.html) 即可，网关配置 swagger 的参考了 [该项目](https://gitee.com/wxdfun/sw ) 的实现方式与源码
+
+#### RocketMQ 更新
+
+整合了 RocketMQ，在订单支付的流程中更新仓库库存与库存存量时使用了二段式提交的事务消息

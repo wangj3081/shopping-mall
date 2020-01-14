@@ -5,6 +5,9 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.FeignClient;
 
 /**
  * 库存服务
@@ -13,9 +16,11 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @see InventoryApplication
  * @since JDK1.8
  */
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-@MapperScan("com.shopping.inventory.dao")
+@EnableDiscoveryClient
+@EnableFeignClients(basePackages = "com.shopping")
 @EnableSwagger2Doc
+@MapperScan("com.shopping.inventory.dao")
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class InventoryApplication {
 
     public static void main(String[] args) {

@@ -1,7 +1,6 @@
 package com.shopping.order.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.protobuf.ServiceException;
 import com.shopping.inventory.service.InventoryService;
@@ -12,13 +11,19 @@ import com.shopping.order.entity.OrderDetailEntity;
 import com.shopping.order.entity.OrderMainEntity;
 import com.shopping.order.service.OrderDetailService;
 import com.shopping.order.service.OrderMainService;
+import com.shopping.rocketmq.topic.RocketMQTopic;
 import com.shopping.util.CustomBeanAndSuperUtils;
 import com.shopping.util.Result;
 import com.shopping.wms.service.WmsStorageFeignService;
 import io.seata.core.context.RootContext;
 import io.seata.spring.annotation.GlobalTransactional;
-import io.seata.tm.api.DefaultGlobalTransaction;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.SendStatus;
+import org.apache.rocketmq.client.producer.TransactionSendResult;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +34,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
@@ -51,6 +57,8 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainDao, OrderMainEnt
     private InventoryService inventoryService;
     @Resource
     private WmsStorageFeignService wmsStorageService;
+    @Resource
+    private RocketMQTemplate rocketMQTemplate;
     /**
      * 用于创建订单做计数器处理，多台机器部署可替换为 redis
      */
@@ -157,32 +165,30 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainDao, OrderMainEnt
     @GlobalTransactional
     @Override
     public String orderPay(String orderNo, String orderPayNo) throws ServiceException {
-        OrderMainEntity orderMainEntity = new OrderMainEntity();
-        LambdaUpdateWrapper<OrderMainEntity> wrapper = new LambdaUpdateWrapper(orderMainEntity);
-        // 处理订单信息
-        wrapper.eq(OrderMainEntity::getOrderNo, orderNo);
-        wrapper.set(OrderMainEntity::getPayNo, orderPayNo);
-        wrapper.set(OrderMainEntity::getOrderStatus, 1);
-        boolean update = this.update(wrapper);
-        OrderDetailEntity detailEntity = new OrderDetailEntity();
-        LambdaUpdateWrapper<OrderDetailEntity> detailWrapper = new LambdaUpdateWrapper(detailEntity);
-        detailWrapper.eq(OrderDetailEntity::getOrderNo, orderNo);
-        detailWrapper.set(OrderDetailEntity::getOrderStatus, 1);
-        // 更新详情单号状态
-        detailService.update(detailWrapper);
+
         // 获取订单详情数据
         List<OrderDetailEntity> detailList = detailService.lambdaQuery().select().eq(OrderDetailEntity::getOrderNo, orderNo).list();
         List<OrderGoodsDto> orderGoodsDtos = CustomBeanAndSuperUtils.convertPojos(detailList, OrderGoodsDto.class);
-        // 扣减库存信息
-        Result<String> result = inventoryService.updateStorageNumGoodsList(orderGoodsDtos);
-        if (!"0".equals(result.getCode())) {
-            throw new ServiceException("扣减库存失败:" + result.getMessage());
-        }
-        // 通知仓库发货
-        Result<String> wmsResult = wmsStorageService.updateWmsStorageList(orderGoodsDtos);
-        if (!"0".equals(wmsResult.getCode())) {
-            throw new ServiceException("扣减仓库库存失败:" + wmsResult.getMessage());
+        // 异步扣减库存存量，成功后并通知仓库发货
+        String orderGoodsStr = JSONObject.toJSONString(orderGoodsDtos);
+        // 发送消息，超时时间单位为: 毫秒
+//        SendResult result = rocketMQTemplate.syncSend(RocketMQTopic.ORDER_GOODS_TOPIC, orderGoodsStr, 2000);
+        // 设置可以获取到该请求内容结果的请求参数
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("orderNo", orderNo);
+        paramMap.put("orderPayNo", orderPayNo);
+
+        MessageHeaders headers = new MessageHeaders(paramMap);
+        Message<String> message = MessageBuilder.createMessage(orderGoodsStr, headers);
+        TransactionSendResult sendResult = rocketMQTemplate.sendMessageInTransaction("tx_order_group", RocketMQTopic.ORDER_GOODS_TOPIC, message, orderNo);
+        log.info("通知扣减库存存量，成功后并通知仓库发货：{}", JSONObject.toJSONString(sendResult));
+
+        // 如果发送失败，抛出异常信息
+        if (!SendStatus.SEND_OK.equals(sendResult.getSendStatus())) {
+            throw new ServiceException("支付订单失败，订单号:" + orderNo);
         }
         return "SUCCESS";
     }
+
+
 }

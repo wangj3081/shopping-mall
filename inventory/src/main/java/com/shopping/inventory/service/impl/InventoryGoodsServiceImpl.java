@@ -5,6 +5,8 @@ import com.shopping.inventory.dao.InventoryGoodsDao;
 import com.shopping.inventory.entity.InventoryGoodsEntity;
 import com.shopping.inventory.service.InventoryGoodsService;
 import com.shopping.order.dto.OrderGoodsDto;
+import com.shopping.util.Result;
+import com.shopping.wms.service.WmsStorageFeignService;
 import io.seata.core.context.RootContext;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,9 @@ public class InventoryGoodsServiceImpl extends ServiceImpl<InventoryGoodsDao, In
     @Autowired
     private InventoryGoodsDao inventoryGoodsDao;
 
+    @Resource
+    private WmsStorageFeignService wmsStorageFeignService;
+
     @Override
     public Integer insertInventoryGoodsList(List<InventoryGoodsEntity> goodsList) {
         if (!CollectionUtils.isEmpty(goodsList)) {
@@ -42,12 +47,17 @@ public class InventoryGoodsServiceImpl extends ServiceImpl<InventoryGoodsDao, In
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateStorageNumListByStorageNo(List<OrderGoodsDto> goodsList) {
         if (!CollectionUtils.isEmpty(goodsList)) {
             // seata 暂时不支持批量更新，只能使用循环单条数据更新
             // this.inventoryGoodsDao.updateStorageNumListByStorageNo(goodsList);
             for (OrderGoodsDto goodsDto : goodsList) {
                 this.inventoryGoodsDao.updateStorageNumByStorageNo(goodsDto);
+            }
+            Result<String> result = wmsStorageFeignService.updateWmsStorageList(goodsList);
+            if (!"0".equals(result.getCode())) {
+                throw new RuntimeException("通知仓库发货异常: " + result.getMessage());
             }
         } else {
             throw new RuntimeException("更新的数据集合不能为空");

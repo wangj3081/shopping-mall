@@ -98,3 +98,9 @@ mybatis-plus:
 ribbon:
   ReadTimeout: 20000 # 获取 rest 接口返回数据超时时间, 单位 毫秒，默认为 1 秒钟
   ConnectTimeout: 20000 # 连接 rest 接口超时时间, 单位 毫秒，默认为 1 秒钟
+
+# rocketmq 配置
+rocketmq:
+  name-server: 192.168.111.129:9876
+  consumer:
+    group: inventory-group
