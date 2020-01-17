@@ -1,4 +1,4 @@
-package com.shopping.rocketmq.topic;
+package com.shopping.order.rocketmq.topic;
 
 /**
  * Topic 定义

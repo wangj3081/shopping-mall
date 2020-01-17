@@ -1,4 +1,4 @@
-package com.shopping.rocketmq.transaction;
+package com.shopping.order.rocketmq.transaction;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.google.protobuf.ServiceException;
 import com.shopping.order.entity.OrderDetailEntity;

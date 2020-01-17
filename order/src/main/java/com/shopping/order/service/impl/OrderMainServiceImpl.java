@@ -11,7 +11,7 @@ import com.shopping.order.entity.OrderDetailEntity;
 import com.shopping.order.entity.OrderMainEntity;
 import com.shopping.order.service.OrderDetailService;
 import com.shopping.order.service.OrderMainService;
-import com.shopping.rocketmq.topic.RocketMQTopic;
+import com.shopping.order.rocketmq.topic.RocketMQTopic;
 import com.shopping.util.CustomBeanAndSuperUtils;
 import com.shopping.util.Result;
 import com.shopping.wms.service.WmsStorageFeignService;
