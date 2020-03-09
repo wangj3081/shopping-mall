@@ -38,7 +38,7 @@ public class InventoryTest {
 
     @Resource
     private InventoryGoodsService inventoryGoodsService;
-//    @Resource
+    @Resource
     private JsoupService jsoupService;
 //    @Resource
     private IntegralService integralService;

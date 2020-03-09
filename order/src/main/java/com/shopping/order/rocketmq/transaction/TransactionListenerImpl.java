@@ -34,7 +34,7 @@ public class TransactionListenerImpl implements RocketMQLocalTransactionListener
     private OrderMainService orderMainService;
 
     /**
-     * 处理本地事务
+     * 处理本地事务,本地事务处理完成后提交消息
      * @param message
      * @param o
      * @return
@@ -63,7 +63,8 @@ public class TransactionListenerImpl implements RocketMQLocalTransactionListener
             return RocketMQLocalTransactionState.COMMIT;
         } catch (Exception e) {
             log.error("【订单支付处理订单信息业务异常】： {}", e);
-            throw new ServiceException("订单支付处理订单信息业务异常");
+//            throw new ServiceException("订单支付处理订单信息业务异常");
+            return RocketMQLocalTransactionState.ROLLBACK;
         }
 
     }

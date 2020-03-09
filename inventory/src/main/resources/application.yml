@@ -101,6 +101,6 @@ ribbon:
 
 # rocketmq 配置
 rocketmq:
-  name-server: 192.168.111.129:9876
+  name-server: 192.168.205.130:9876
   consumer:
     group: inventory-group

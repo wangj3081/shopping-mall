@@ -25,6 +25,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <jdk.version>1.8</jdk.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
     <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
     <shopping-mall-service.version>1.0-SNAPSHOT</shopping-mall-service.version>
@@ -267,6 +268,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
           <configuration>
             <source>${jdk.version}</source> <!--源码的JDK版本-->
             <target>${jdk.version}</target>
@@ -277,7 +279,7 @@
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
-          <!--<version>${spring-boot.version}</version>-->
+          <version>${spring-boot.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>

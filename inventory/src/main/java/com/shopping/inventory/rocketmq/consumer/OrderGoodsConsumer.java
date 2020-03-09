@@ -54,8 +54,12 @@ public class OrderGoodsConsumer implements RocketMQListener<String>, RocketMQPus
                 for (MessageExt messageExt : messageExts) {
                     String value = new String(messageExt.getBody());
                     List<OrderGoodsDto> orderGoodsList = JSONArray.parseArray(value, OrderGoodsDto.class);
-                    // 扣减商品库存
-                    inventoryGoodsService.updateStorageNumListByStorageNo(orderGoodsList);
+                    try {
+                        // 扣减商品库存
+                        inventoryGoodsService.updateStorageNumListByStorageNo(orderGoodsList);
+                    } catch (Exception e) {
+                        return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+                    }
                     System.err.println(value);
                 }
                 // 提交之后才会更新 offset(消费消息的偏移量)，如果消费处理失败，也可以重复消费

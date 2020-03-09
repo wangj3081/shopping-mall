@@ -96,7 +96,7 @@ ribbon:
 
 # rocketmq 配置
 rocketmq:
-  name-server: 192.168.111.129:9876
+  name-server: 192.168.205.130:9876
   producer:
     group: producer_group # 生产数据的组
     send-message-timeout: 300000 # 发送数据超时时间，单位毫秒

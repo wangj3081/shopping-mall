@@ -47,7 +47,8 @@ public class InventoryGoodsServiceImpl extends ServiceImpl<InventoryGoodsDao, In
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+//    @Transactional(rollbackFor = Exception.class)
+    @GlobalTransactional
     public void updateStorageNumListByStorageNo(List<OrderGoodsDto> goodsList) {
         if (!CollectionUtils.isEmpty(goodsList)) {
             // seata 暂时不支持批量更新，只能使用循环单条数据更新
