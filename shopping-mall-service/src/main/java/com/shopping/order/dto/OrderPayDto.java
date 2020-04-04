@@ -3,6 +3,7 @@ package com.shopping.order.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
  * @since JDK1.8
  */
 @Data
-public class OrderPayDto {
+public class OrderPayDto implements Serializable {
 
     @NotNull(message = "订单编码不能为空")
     private String orderNo;
