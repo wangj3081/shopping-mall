@@ -53,6 +53,8 @@
     <sentinel-spring-cloud-gateway-adapter.version>1.7.1</sentinel-spring-cloud-gateway-adapter.version>
     <sentinel-transport-simple-http.version>1.7.1</sentinel-transport-simple-http.version>
     <lettuce.version>5.0.3.RELEASE</lettuce.version>
+    <commons-pool2.version>2.6.2</commons-pool2.version>
+    <spring-data-redis.version>2.1.14.RELEASE</spring-data-redis.version>
   </properties>
 
   <dependencyManagement>
@@ -275,6 +277,18 @@
         <groupId>io.lettuce</groupId>
         <artifactId>lettuce-core</artifactId>
         <version>${lettuce.version}</version>
+      </dependency>
+      <!--redis数据库连接池-->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-pool2</artifactId>
+        <version>${commons-pool2.version}</version>
+      </dependency>
+      <!--spring data redis-->
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-redis</artifactId>
+        <version>${spring-data-redis.version}</version>
       </dependency>
 
     </dependencies>

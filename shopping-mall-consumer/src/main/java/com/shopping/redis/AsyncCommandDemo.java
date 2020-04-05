@@ -20,14 +20,14 @@ import java.util.concurrent.TimeUnit;
 public class AsyncCommandDemo {
 
     public static void main(String[] args) throws Exception {
-        RedisAsyncCommands redisAsyncCommands = RedisClientUtil.redisClient().async();
+        RedisAsyncCommands redisAsyncCommands = RedisClientUtil.redisConnection().async();
 //        operation(redisAsyncCommands);
 //        hash(redisAsyncCommands);
 //        list(redisAsyncCommands);
 //        set(redisAsyncCommands);
-//        zSet(redisAsyncCommands);
+        zSet(redisAsyncCommands);
         // 地理位置
-        geoLocation(redisAsyncCommands);
+//        geoLocation(redisAsyncCommands);
     }
 
     private static void geoLocation(RedisAsyncCommands redisAsyncCommands) throws InterruptedException, ExecutionException {

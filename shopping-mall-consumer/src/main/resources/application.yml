@@ -46,6 +46,17 @@ spring:
       simple:
         retry:
           enabled: true
+  # redis 配置
+  redis:
+    host: 192.168.205.130
+    port: 6379
+    password: redis
+    database: 0
+    lettuce:
+      pool:
+        max-active: 10 # 最大可用连接
+        max-idle: 1 # 最大可维持连接
+        min-idle: 1 # 最小可维持连接
 
 # actuator 配置
 management:
@@ -64,3 +75,5 @@ info:
 ribbon:
   ReadTimeout: 5000 # 获取 rest 接口返回数据超时时间, 单位 毫秒，默认为 1 秒钟
   ConnectTimeout: 5000 # 连接 rest 接口超时时间, 单位 毫秒，默认为 1 秒钟
+
+# redis 配置
