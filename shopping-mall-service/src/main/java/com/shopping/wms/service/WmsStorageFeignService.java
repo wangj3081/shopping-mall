@@ -2,6 +2,7 @@ package com.shopping.wms.service;
 
 import com.shopping.order.dto.OrderGoodsDto;
 import com.shopping.util.Result;
+import com.shopping.wms.fallback.WmsStorageFeignServiceFallBack;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,7 +19,7 @@ import java.util.List;
  * @since JDK1.8
  */
 @Api(value = "仓储服务")
-@FeignClient(value = "mall-wms")
+@FeignClient(value = "mall-wms", url = "http://localhost:9501", fallback = WmsStorageFeignServiceFallBack.class)
 public interface WmsStorageFeignService {
 
     /**

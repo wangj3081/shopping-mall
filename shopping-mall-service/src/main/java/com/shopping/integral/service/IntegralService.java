@@ -1,6 +1,7 @@
 package com.shopping.integral.service;
 
 import com.shopping.integral.dto.IntegralDto;
+import com.shopping.inventory.fallback.InventoryServiceFallBack;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +17,7 @@ import java.util.List;
  * @see IntegralService
  * @since JDK1.8
  */
-@FeignClient(value = "mall-integral")
-//@FeignClient(value = "mall-gateway")
+@FeignClient(value = "mall-integral", url = "http://localhost:9501", fallback = InventoryServiceFallBack.class)
 public interface IntegralService {
 
 

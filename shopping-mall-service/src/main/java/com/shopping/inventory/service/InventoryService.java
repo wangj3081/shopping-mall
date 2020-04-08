@@ -1,5 +1,6 @@
 package com.shopping.inventory.service;
 
+import com.shopping.inventory.fallback.InventoryServiceFallBack;
 import com.shopping.order.dto.OrderGoodsDto;
 import com.shopping.util.Result;
 import io.swagger.annotations.Api;
@@ -18,7 +19,7 @@ import java.util.List;
  * @since JDK1.8
  */
 @Api(value = "库存服务")
-@FeignClient(value = "mall-inventory")
+@FeignClient(value = "mall-inventory", url = "http://localhost:9501", fallback = InventoryServiceFallBack.class)
 public interface InventoryService {
 
     @ApiOperation(value = "更新商品库存存量列表", httpMethod = "POST")

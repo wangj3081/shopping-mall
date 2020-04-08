@@ -2,6 +2,7 @@ package com.shopping.order.service;
 
 import com.shopping.order.dto.OrderPayDto;
 import com.shopping.order.dto.OrderReq;
+import com.shopping.order.fallback.OrderServiceFallBack;
 import com.shopping.util.Result;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @see OrderService
  * @since JDK1.8
  */
-@FeignClient(value = "mall-order")
+@FeignClient(value = "mall-order", url = "http://localhost:9501", fallback = OrderServiceFallBack.class)
 public interface OrderService {
      /**
      * 获取订单编码服务

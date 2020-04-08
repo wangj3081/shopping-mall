@@ -16,7 +16,7 @@ import java.util.Map;
  * @see JsoupService
  * @since JDK1.8
  */
-@FeignClient(value = "mall-webdata")
+@FeignClient(value = "mall-webdata", url = "http://localhost:9501")
 public interface JsoupService {
 
     @ApiOperation(value = "数据获取", tags = "数据获取")

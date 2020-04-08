@@ -55,6 +55,12 @@ public class Result<T> implements Serializable {
         return this;
     }
 
+    public Result<T> systemError() {
+        this.code = ERROR_CODE;
+        this.message = "系统异常";
+        return this;
+    }
+
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this);

@@ -75,6 +75,12 @@
       <artifactId>spring-cloud-alibaba-seata</artifactId>
     </dependency>
 
+    <!--引入hystrix服务包，做熔断处理-->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+    </dependency>
+
   </dependencies>
 
   <build>

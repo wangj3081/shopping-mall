@@ -1,6 +1,5 @@
 server:
   port: 80
-
 spring:
   application:
       name: mall-consumer
@@ -76,4 +75,14 @@ ribbon:
   ReadTimeout: 5000 # 获取 rest 接口返回数据超时时间, 单位 毫秒，默认为 1 秒钟
   ConnectTimeout: 5000 # 连接 rest 接口超时时间, 单位 毫秒，默认为 1 秒钟
 
-# redis 配置
+
+# 启用熔断
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 50000  # feign 的连接超时时间
+        readTimeout: 50000 # feign 读取超时时间
+        loggerLevel: full # 全量日志打印

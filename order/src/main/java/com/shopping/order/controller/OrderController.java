@@ -1,33 +1,21 @@
 package com.shopping.order.controller;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
+
 import com.google.protobuf.ServiceException;
 import com.shopping.integral.dto.IntegralDto;
 import com.shopping.integral.service.IntegralService;
 import com.shopping.order.dto.OrderPayDto;
 import com.shopping.order.dto.OrderReq;
-import com.shopping.order.entity.OrderMainEntity;
 import com.shopping.order.service.OrderMainService;
 import com.shopping.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 订单服务
@@ -58,6 +46,8 @@ public class OrderController {
     @PostMapping(value = "getOrderNo")
     public Result<String> getOrderNo() {
         try {
+//            log.info("【进入获取订单方法】");
+//            throw new RuntimeException("异常了");
             String orderNo = orderMainService.getOrderNo();
             return new Result<String>().success(orderNo);
         } catch (Exception e) {
@@ -65,6 +55,7 @@ public class OrderController {
             return new Result<String>().error("-1", "获取订单异常");
         }
     }
+
 
     @ApiOperation(value = "订单支付,支付成功返回支付编码", httpMethod = "POST")
     @PostMapping(value = "orderPay")
