@@ -1,15 +1,16 @@
 
 package com.shopping.integral.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shopping.integral.dao.IntegralRecordDao;
 import com.shopping.integral.entity.IntegralRecordEntity;
+import com.shopping.integral.entity.ShardingIntegralRecordEntity;
 import com.shopping.integral.service.IntegralService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,16 +20,19 @@ import java.util.List;
  * @see IntegralServiceImpl
  * @since JDK1.8
  */
-@Service
-public  class IntegralServiceImpl extends ServiceImpl<IntegralRecordDao, IntegralRecordEntity>
+@Service(value = "integralServiceImpl")
+public  class IntegralServiceImpl extends ServiceImpl<IntegralRecordDao, ShardingIntegralRecordEntity>
         implements IntegralService{
+
+    @Autowired
+    private IntegralRecordDao recordDao;
 
 
     @Override
-    public List<IntegralRecordEntity> queryListByStorageNo(String storageNo) {
-        LambdaQueryWrapper<IntegralRecordEntity> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(IntegralRecordEntity::getStorageNo, storageNo);
-        List<IntegralRecordEntity> resultList = this.baseMapper.selectList(wrapper);
+    public List<ShardingIntegralRecordEntity> queryListByStorageNo(String storageNo) {
+        LambdaQueryWrapper<ShardingIntegralRecordEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ShardingIntegralRecordEntity::getStorageNo, storageNo);
+        List<ShardingIntegralRecordEntity> resultList = this.recordDao.selectList(wrapper);
         return resultList;
     }
 }

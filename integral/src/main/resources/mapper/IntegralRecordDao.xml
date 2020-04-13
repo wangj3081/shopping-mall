@@ -5,4 +5,7 @@
 	namespace="com.shopping.integral.dao.IntegralRecordDao">
 
 
+	<insert id="insertIntegralRecord" parameterType="com.shopping.integral.entity.ShardingIntegralRecordEntity">
+		INSERT INTO integral_record value (#{id},#{storageNo},#{storageName},#{orderNo},#{payNo},#{amount},#{integral})
+	</insert>
 </mapper>

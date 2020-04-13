@@ -53,27 +53,29 @@
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
         </dependency>
 
-        <!--jdbc-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
+       <!-- <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.0</version>
+        </dependency>-->
 
         <!--mysql-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-        <!--druid 连接池-->
+        <!--由于druid-spring-boot-starter会创建数据库连接池，
+        但是此处是交由 sharding jdbc 创建的，所有只引用 druid-->
         <dependency>
             <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+
+        <!--druid 连接池-->
+       <!-- <dependency>
+            <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-        </dependency>
-        <!--mybatis-plus 包-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!--mybatis-plus spring boot 整合包-->
         <dependency>
@@ -99,6 +101,22 @@
         <dependency>
             <groupId>com.shopping</groupId>
             <artifactId>shopping-mall-service</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.seata</groupId>
+                    <artifactId>seata-all</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-alibaba-seata</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--分库分表-->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 

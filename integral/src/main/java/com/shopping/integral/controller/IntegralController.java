@@ -1,10 +1,11 @@
 package com.shopping.integral.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.shopping.integral.dto.IntegralDto;
 import com.shopping.integral.entity.IntegralRecordEntity;
+import com.shopping.integral.entity.ShardingIntegralRecordEntity;
 import com.shopping.integral.service.IntegralService;
 import io.swagger.annotations.Api;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +28,13 @@ import java.util.List;
 @RequestMapping(value = "/integral")
 public class IntegralController {
 
-    @Resource
+    @Resource(name = "integralServiceImpl")
     private IntegralService integralService;
 
 
     @GetMapping(value = "/queryListByStorageNo")
     public List<IntegralDto> queryListByStorageNo(@RequestParam(name = "storageNo") String storageNo) {
-        List<IntegralRecordEntity> listValue = integralService.queryListByStorageNo(storageNo);
+        List<ShardingIntegralRecordEntity> listValue = integralService.queryListByStorageNo(storageNo);
         List<IntegralDto> resultList = convertList2List(listValue, IntegralDto.class);
         return resultList;
     }

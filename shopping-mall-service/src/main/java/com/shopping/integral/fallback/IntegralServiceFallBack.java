@@ -14,7 +14,7 @@ import java.util.List;
  * @Date 2020/4/8 5:11 下午
  * @Version 1.0
  **/
-@Component
+@Component(value = "integralServiceFallBack")
 public class IntegralServiceFallBack implements IntegralService {
     @Override
     public List<IntegralDto> queryListByStorageNo(String storageNo) {

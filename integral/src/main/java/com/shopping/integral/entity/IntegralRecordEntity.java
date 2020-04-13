@@ -1,7 +1,5 @@
 package com.shopping.integral.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -16,9 +14,9 @@ import java.math.BigDecimal;
  * @since JDK1.8
  */
 @Data
-@TableName(value = "integral_record")
+//@TableName(value = "integral_record")
 public class IntegralRecordEntity implements Serializable {
-    @TableId
+//    @TableId
     private String id;
 
     @ApiModelProperty(value = "店铺编码")

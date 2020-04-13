@@ -1,0 +1,78 @@
+server:
+  port: 8501
+
+spring:
+  application:
+    name: mall-integral-8501
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      host: "@config.consul.host@"
+      port: "@config.consul.port@"
+      enabled: true
+      discovery:
+        tags: version=1.0,author=code
+        health-check-path: /manager/info # 为健康检查的url,由consul定时调用一次判断服务是否可用
+        health-check-interval: 5s # 检查间隔时间
+        register-health-check: false # 不做健康检查
+        #        instance-id: ${spring.application.name}:${java.rmi.server.hostname}:${server.port} # 注册的服务ID
+        instance-id: ${spring.application.name}:${server.port} # 注册的服务ID
+        # service-name: ${spring.application.name} # 注册的服务名称
+        service-name: mall-integral # 注册的服务名称
+        prefer-ip-address: true # 是否使用指定IP地址，默认为 false
+        ip-address: "@config.consul.host@" # 指定 IP 地址
+        deregister: true
+  shardingsphere:
+    datasource:
+      names: ds0
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/mall_integral?userUnicode=true&allowMultiQueries=true
+        username: root
+        password: root
+#        druid 的参数配置
+        removeAbandoned: true
+        removeAbandonedTimeout: 2800
+        timeBetweenEvictionRunsMillis: 50000
+        minEvictableIdleTimeMillis: 200000
+        initial-size: 12
+        max-active: 105
+        min-idle: 15
+    # 逻辑表配置
+    sharding:
+      tables:
+        integral_record: # 逻辑表名
+          actual-data-nodes: ds0.integral_record$->{0..1} # 表的数据分片节点
+          key-generator: # 主键生成策略
+            column: id  # 主键字段
+            type: SNOWFLAKE  # 雪花算法
+          table-strategy: # 知道表分片策略，分片算法
+            inline:
+              sharding-column: id
+              #  数据分片规则
+              algorithm-expression: integral_record$->{id % 2}
+
+    #      binding-tables: integral_record
+    # 打开SQL输出日志
+    props:
+      sql:
+        show: true
+  main:
+    allow-bean-definition-overriding: true # bean 重复定义进行覆盖
+# mybatis-plus 配置
+mybatis-plus:
+  type-aliases-package: com.shopping.integral.entity.**
+  configuration:
+    cache-enabled: false # 不开启二级缓存
+    map-underscore-to-camel-case: true
+  mapper-locations:
+    - classpath*:/mapper/**/*.xml # xml 文件
+
+logging:
+  level:
+    root: info
+    org.springfarmework.web: info
+    com.shard.jdbc: debug
+    durid.sql: debug
